@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script> 
+        <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+        <meta name="viewport" content="with=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />       
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+        <title>انشاء حساب لطالب</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/fontawesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        </head>
+        <body>
+         
+          
+          
+                
+             <center>
+          
+          <video id="myvideo" autoplay> <source src= "{{ url_for('static', filename='dd.mp4') }}"  type="video/mp4" ></video>
+          <!-- <button  style=width:100px id="on" onclick="play()"> تشغيل</button>
+          <button  style=width:100px id="of" onclick="pause()"> ايقاف</button>        -->
+                </center>
+        
+              
+        
+             
+
+       <script>
+
+
+       function play(){
+      
+         document.getElementById("myvideo").play(); 
+      
+       } 
+       function pause(){
+        document.getElementById("myvideo").pause();
+   
+        
+       }
+
+      //  function on(){
+        
+      //  document.getElementById("on").style.background="#517362";
+      //  document.getElementById("of").style.background='#fff';
+      //  }
+      //  function off(){
+      //   document.getElementById("of").style.background="#c04568";
+      //   document.getElementById("on").style.background="#fff";
+      //  }
+       
+       if(annyang) {
+          var commands = {
+            
+           'ايقاف':function(){
+            document.getElementById("myvideo").pause();
+            pause();
+     
+           },
+           'تشغيل':function(){
+            document.getElementById("myvideo").play(); 
+            play();
+            },
+        
+           'رجوع':function(){     
+            window.location.replace("/")
+             
+           },
+        
+          
+           }
+         };
+         annyang.setLanguage('ar-PA');
+         // Add our commands to annyang
+         annyang.addCommands(commands);
+       
+         annyang.debug();
+        annyang.start({ autoRestart: true, continuous: true });
+
+
+
+
+     </script>       
+       
+       
+       
+            </body>
+
+        </html>
+

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="with=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script> 
+        <meta charset="UTF-8" />       
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+       
+        <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/fontawesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">   
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+     $( document ).ready(function() {
+     var h=document.getElementsByClassName('timer')[0].value;
+     var m=document.getElementsByClassName('timer')[1].value;
+     var s=document.getElementsByClassName('timer')[2].value;
+     var yess=document.getElementsByClassName('yess');
+    
+     $(".yess").css("background-color","rgba(239, 239, 239, 0.3),rgba(19, 1, 1, 0.3)");
+         // $(".yess").css("color","rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3)");  
+         $(".yess").css("border","2px solid #fff");
+         $(".yess").css("color"," color: #000");
+       
+      var checkAndChange =function(){
+         
+     if(h=="" || m=="" || s==""){
+         $('#bb').prop('disabled', true);
+         $(".yess").css("background-color","rgba(239, 239, 239, 0.3),rgba(19, 1, 1, 0.3)");
+         // $(".yess").css("color","rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3)");   
+         $(".yess").css("color"," color: #000");   
+     }
+     else{
+         
+         $('#bb').prop('disabled', false);
+         
+         $(".yess").css("background-color","#4f646f");
+         $(".yess").css("border","2px solid #fff");
+         $(".yess").css("color"," color: #000");
+ 
+     } }
+     $("input").keyup(function(){
+     var h2=document.getElementsByClassName('timer')[0].value;
+     var m2=document.getElementsByClassName('timer')[1].value;
+     var s2=document.getElementsByClassName('timer')[2].value;
+     var yess=document.getElementsByClassName('yess');
+        
+        h=h2;
+        m=m2;
+        s=s2;
+         
+         checkAndChange();
+     });
+   
+      });
+           </script>
+     </head>
+ 
+ <body>
+     
+     
+     <section class="header">
+        <div style="display:none"  type="text" value="" id="q">
+            <br>
+            <p id="f">hhhhhhhhhhhh</p>
+            <br>
+            <center>
+         <button id="l" onclick="clos()">اغلاق</button>
+         </center>
+         </div>
+         <nav>
+             
+             <div class="nav-links15" id="navLinks">
+                 <ul>
+                 
+                       <li>
+                     <form  action="{{ url_for('admin') }}" method="POST">
+                         <!-- <input style="display: none" type="text" name="number" value="12" id="number" > -->
+                         <button type="submit" class="gh">رجوع</button><i class="vv fa fa-backward"></i>
+                         </form></li>
+                         
+                         <li><a href="{{ url_for('login') }}">تسجيل الخروج</a><i class="vv fa fa-sign-out" ></i></li>
+                        
+                         <li><a href="{{ url_for('home') }}">الصفحة الرئيسية</a><i class="vv fa fa-home" ></i></li>
+              
+              
+                 </ul>
+             </div>
+         </nav>
+         
+         <center>
+             <div class="sidebar1">
+                 <br><br><bt><br><br><br>
+        
+       <h1 class="h1 ee">انشاء وقت</h1>
+       <br>
+       <center>
+       <div class="addInfo">
+       
+            <div class="time">
+                 <input type="text" name="hh" id="hh" class="timer" placeholder="hh" ><p class ="z">:</p>
+                 <input type="text" name="mm" id="mm" class="timer" placeholder="mm" ><p class ="z">:</p>
+                 <input type="text" name="ss" id="ss" class="timer" placeholder="ss" >
+                 <div class="nn"><i class="fa fa-clock-o na" ></i></div>
+                 
+    </div>
+
+
+ <button  id="bb"  value="تأكيد" class="yess" disabled >اضافة</button>
+ 
+ </div>
+       
+       </div>
+                 </div>
+             </center>
+         </center>
+ 
+       
+     </section>
+ 
+    <script>
+       
+  
+   function clos(){
+    document.getElementById("q").style.display="none";
+   }
+ 
+    
+ 
+     $("#bb").click(function(){
+ 
+    var h=document.getElementsByClassName('timer')[0].value;
+     var m=document.getElementsByClassName('timer')[1].value;
+     var s=document.getElementsByClassName('timer')[2].value;
+       
+     
+    
+      if(h<24 && m<60 && s<60)
+     {
+         $.ajax({
+         url: "{{ url_for('time_ajax') }}",
+         data: {'h' : h , 'm' :m , 's':s },
+         type: 'POST',
+        success: function(response) {
+            document.getElementsByClassName('timer')[0].value="";
+            document.getElementsByClassName('timer')[1].value="";
+            document.getElementsByClassName('timer')[2].value="";
+            
+            console.log(h);
+            if(response="yes"){
+            document.getElementById("f").innerHTML="تمت الاضافه"
+            document.getElementById("q").style.display="block";
+            }
+           
+ 
+        },
+       error: function(error) {
+        console.log(error) 
+        }
+        });  
+    }
+    else{
+
+        document.getElementById("f").innerHTML="تاكد من القيم المدخله"   ;
+        document.getElementById("q").style.display="block"; 
+    }
+                              
+      });
+     
+
+ 
+ 
+    function checkAndChange(){
+     var h=document.getElementsByClassName('timer')[0].value;
+     var m=document.getElementsByClassName('timer')[1].value;
+     var s=document.getElementsByClassName('timer')[2].value;
+     var yess=document.getElementsByClassName('yess');
+    
+     if(h=="" && m=="" && s==""){
+         $('#bb').prop('disabled', true)
+         $(".yess").css("background-color","rgba(239, 239, 239, 0.3),rgba(19, 1, 1, 0.3)");
+         // $(".yess").css("color","rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3)");   
+         $(".yess").css("color"," color: #000");   
+     }
+     else{
+         
+         $('#bb').prop('disabled', false)
+         
+         $(".yess").css("background-color","#4f646f");
+         $(".yess").css("border","2px solid #fff");
+         $(".yess").css("color"," color: #000");
+ 
+     } }
+    
+     
+             
+ 
+      
+            if(annyang) {
+          var commands = {
+           'تسجيل الخروج':function(){     
+             document.getElementsByTagName("a")[0].click();
+             
+           },
+           'الصفحه الرئيسيه':function(){     
+             document.getElementsByTagName("a")[1].click();
+             
+           },
+           'رجوع':function(){     
+            document.getElementsByClassName("gh")[0].click();        
+           }, 
+           'الساعه *tag':function(variable){ 
+            variable=variable.replaceAll(" ", "");
+            h=document.getElementById("hh");
+            h.value= variable;
+            checkAndChange();
+            
+           },
+          
+           'الدقيقه *tag':function(variable){  
+            variable=variable.replaceAll(" ", "");
+            h=document.getElementById("mm");
+            h.value= variable;
+            checkAndChange();
+           },
+           'الثانيه *tag':function(variable){  
+            variable=variable.replaceAll(" ", "");
+            h=document.getElementById("ss");
+            h.value= variable;
+            checkAndChange();
+           },
+           'اضافه':function(){  
+            document.getElementById('bb').click();
+          
+           },
+          'اغلاق':function(){  
+           clos();
+        
+           },
+
+
+          
+        
+          }
+         };
+         annyang.setLanguage('ar-PA');
+         // Add our commands to annyang
+         annyang.addCommands(commands);
+       
+         annyang.debug();
+        annyang.start({ autoRestart: true, continuous: true });
+
+
+ 
+ 
+         </script>
+      
+        
+     
+ </body>
+ </html>

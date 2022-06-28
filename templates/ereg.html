@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="with=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />       
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <title>adminafter</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/fontawesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script> 
+        <script>
+          $( document ).ready(function() {
+      var ccc=document.getElementsByClassName('addsec')[0].value;
+      var sss=document.getElementsByClassName('addsec')[1].value;
+      var hhh=document.getElementsByClassName('addsec')[2].value;
+      var y=document.getElementsByClassName('addsectionn')[0];
+  
+   $("#w").css("background-color","#686b6c");
+       // $(".yess").css("color","rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3)");  
+      
+       $("#w").css("color"," color: #000");
+     
+    var checkAndChange =function(){
+       
+   if(sss=="" || ccc=="" || hhh==""){
+       $('#w').prop('disabled', true);
+      
+       // $(".yess").css("color","rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3)");   
+       $("#w").css("color"," color: #000");   
+   }
+   else{
+       
+       $('#w').prop('disabled', false);
+       
+       $("#w").css("background-color","#517362");
+       
+       $("#w").css("color"," color: #000");
+
+   } }
+   $("input").keyup(function(){
+    var ccc2=document.getElementsByClassName('addsec')[0].value;
+   var sss2=document.getElementsByClassName('addsec')[1].value;
+   var hhh2=document.getElementsByClassName('addsec')[2].value;
+   var y2=document.getElementsByClassName('addsectionn')[0];
+       ccc=ccc2;
+       sss=sss2;
+       y=y2;
+       hhh=hhh2;
+       checkAndChange();
+   });
+ 
+    });
+         </script>
+    </head>
+    <body>
+      <section class="headerinfo">
+        <div style="display:none"  type="text" value="" id="q">
+          <br>
+          <p id="f">hhhhhhhhhhhh</p>
+          <br>
+          <center>
+       <button id="l" onclick="clos()">اغلاق</button>
+       </center>
+       </div>
+
+
+       <div style="display:none"  type="text" value="" id="q2">
+        <br>
+        <p id="f2">هل انت  متاكد؟</p>
+        <br>
+        <center>
+     <button id="ll1">نعم</button>
+     <button id="ll2" onclick="no()">لا</button>
+     </center>
+     </div>
+        <nav>
+            <div class="nav-links3" id="navLinks">
+                <ul>
+                  <li>
+                    <form  action="{{ url_for('afterlogin') }}" method="POST">
+                      <input style="display: none" type="text" name="number" value="{{std_id}}" id="number" >
+                      <button type="submit" class="gh">رجوع</button><i class="jk fa fa-backward"></i>
+                      </form></li>
+
+                    <li><a href="{{ url_for('login') }}">تسجيل الخروج</a><i class="jk fa fa-sign-out"></i></li>
+                   
+                    <li><a href="{{ url_for('home') }}">الصفحة الرئيسية</a><i class="jk fa fa-home"></i></li>
+                </ul>
+            </div>
+
+            
+        </nav>
+
+      <input type="text"  style="display: none" value="{{std_id}}" id="id015">
+      <br><br><br>
+            <div  class="container" id="cat">
+                
+                <table id="myTableq" class="table111">
+                  <tr >
+                   
+                    <th style="width:20%;">الرقم  </th> 
+                      <th style="width:20%;">رقم المادة   </th>
+                      <th style="width:20%;">اسم المادة   </th>
+                      <th style="width:20%;">رقم الشعبة  </th> 
+                      <th style="width:20%;">عدد الساعات  </th>
+                      <!-- <th style="width:20%;"><button id="delete>حذف</button></th> -->
+                      <th style="width:20%;">حذف</th>
+            
+                </tr>
+            
+         
+                </table>
+            
+                </div>
+              </center>
+                   <br><br>
+              <center> <div  class="container" id="dog">
+                <!-- <input class="addsec" id='cell1' placeholder="عدد الطلاب" type="text"/> -->
+                <input class="addsec" id='cell2' placeholder="رقم المادة" type="text"/>
+                <input class="addsec" id='cell3' placeholder="رقم الشعبة" type="text"/>
+                <input class="addsec" id='cell4' placeholder="عدد الساعات" type="text"/>
+                <!-- <input class="addsec" id='cell5' placeholder="السجل المالي" type="text"/> -->
+               
+                <br><br>
+                <button class="addsectionn" disabled id="w" onclick="insRow()">اضافة</button>
+                <br>
+                <button class="addsectionn" onclick="submitt()">تاكيد الجدول</button>
+                
+                </div></center>
+                
+                  
+                <script> 
+
+                   $(document).ready(function(){
+
+                    $.ajax({
+                      url:"{{url_for('t_ajax')}}",
+                      type:'POST',
+                      data: {'std_id': std_id},
+                      
+                      success:function(response){
+                       for(var i=0;i<response.length;++i){
+                        var x=document.getElementById('myTableq').insertRow(document.getElementById('myTableq').rows.length);
+                        var y= x.insertCell(0);
+                        var z= x.insertCell(1);
+                        var d= x.insertCell(2);
+                        var p= x.insertCell(3);
+                        var g= x.insertCell(4);
+                        var h=x.insertCell(5);
+                       
+                        var a = document.getElementById("myTableq");
+                        var rows = a.rows.length; 
+       
+                       
+                        y.innerHTML=(rows-1);
+                        z.innerHTML=response[i].c_id;
+                        d.innerHTML=response[i].name;
+                        p.innerHTML=response[i].section;
+                        g.innerHTML=response[i].num;
+                        h.innerHTML='<i class="fa fa-trash cc"></i>';
+
+                        }
+                      },
+                      error: function (error) {
+                        console.log(error);
+                         },
+                    });
+                    });
+                  
+                 
+                   
+                  var i=0;
+                  var s_id = document.getElementById("cell3").value;
+                  var course_id = document.getElementById("cell2").value;
+                  var numhours = document.getElementById("cell4").value;
+                  var total = 0;
+
+                  var std_id = document.getElementById("id015").value;//from jinja std_id
+                  var h1 = 0;
+                 
+
+
+                 function insRow()
+                {
+                    
+                  var s_id = document.getElementById("cell3").value;
+                  var course_id = document.getElementById("cell2").value;
+                  var numhours = parseInt( document.getElementById("cell4").value);
+
+                   console.log("ddddddddddddd");
+                   console.log(total);
+                   console.log(h1) ;
+
+
+                  
+                   var input, filter, table, tr, td, i, txtValue,td2;
+                   var count=0 ;   
+      
+                   table = document.getElementById("myTableq");
+                   tr = table.getElementsByTagName("tr"); 
+                   
+                   console.log(tr.length);
+                   for (i = 1; i < tr.length; i++) {
+                   
+                   td = tr[i].getElementsByTagName("td")[4].innerText;
+                 
+                   count = parseInt (count) +parseInt(td);
+        
+                   }
+              total=count;
+              console.log(total);
+          
+                   h1 = parseInt (numhours) +parseInt(total);
+                  if (h1<=21){
+                   
+                    
+                 
+                 console.log(total)
+                 console.log(std_id)
+                 console.log(course_id)
+                 console.log(s_id)
+
+
+
+                   $.ajax({
+                    url: "{{ url_for('temp_ajax') }}",
+                    data: {
+                      'std_id': std_id,
+                       'course_id' : course_id,
+                       's_id': s_id,
+                    },
+                    type: "POST",
+                    success: function (response) {
+                        console.log(response[0]);
+                        console.log(response[1]);
+
+                      if (response[1] ==  "اكتملت العملية بنجاح"){
+                        total = numhours + total
+                        var x=document.getElementById('myTableq').insertRow(document.getElementById('myTableq').rows.length);
+                        var y= x.insertCell(0);
+                        var z= x.insertCell(1);
+                        var d= x.insertCell(2);
+                        var p= x.insertCell(3);
+                        var g= x.insertCell(4);
+                        var h=x.insertCell(5);
+                      
+                       
+                        var a = document.getElementById("myTableq");
+                        var rows = a.rows.length; 
+       
+                       
+                        y.innerHTML=(rows-1);
+                        z.innerHTML=(course_id);
+                        d.innerHTML=response[0];
+                        p.innerHTML=s_id;
+                        g.innerHTML=numhours;
+                        h.innerHTML='<i class="fa fa-trash cc"></i>';
+                      }
+                       else if (response[1]== "هذا المساق يتعارض مع مساق اخر في نفس الوقت")
+                       {
+                        document.getElementById("f").innerHTML= "هذا المساق يتعارض مع مساق اخر في نفس الوقت";
+                       document.getElementById("q").style.display="block";
+                       }
+                       else if(response[1]== "رقم المساق غير صحيح"){
+                        document.getElementById("f").innerHTML= "رقم المساق غير صحيح";
+                       document.getElementById("q").style.display="block";
+                       }
+                       else if(response[1]== "رقم الشعبة غير صحيح"){
+                        document.getElementById("f").innerHTML= "رقم الشعبة غير صحيح";
+                       document.getElementById("q").style.display="block";
+                       }
+                       else{
+                        document.getElementById("f").innerHTML= "انت بالفعل ملتحق بشعبة من هذا المساق يجب عليك حذف المساق ثم اعادة الالتحاق بشعبة اخرى";
+                       document.getElementById("q").style.display="block";
+                        
+                       }
+                    },
+          
+                    error: function (error) {
+                     console.log(error);
+                     },
+                  });
+
+                
+                 }
+                 else{
+                  document.getElementById("f").innerHTML= "تجاوزت العدد المسموح به من الساعات";
+                       document.getElementById("q").style.display="block";
+               
+                 }
+                 document.getElementById("cell2").value = "";
+                 document.getElementById("cell3").value = ""; 
+                 document.getElementById("cell4").value = "";
+                //  var fr = 0 ;
+                //  fr = total *24;
+                //  document.getElementById("cell5").value = fr;
+
+                }
+
+
+
+
+                function deleteRow(r) {
+                  var i = r.parentNode.parentNode.rowIndex;
+                  document.getElementById("myTable").deleteRow(i);
+                }
+                
+
+                function submitt(){
+                  $.ajax({
+                    url: "{{ url_for('confirm_ajax') }}",
+                    data: {'std_id': std_id,
+                    },
+                    type: "POST",
+                    success: function (response) {
+                      console.log(response)
+                    },
+          
+                    error: function (error) {
+                     console.log(error);
+                     },
+                  });
+
+                }         
+
+  document.getElementById("myTableq").addEventListener("click", function(evt) {
+  
+  var btn = evt.target;
+  if(btn.tagName==="I"){ 
+  
+  var row = btn.parentNode.parentNode; 
+  var cells = row.getElementsByTagName("td"); 
+   c=cells[1].innerText;
+   s=cells[3].innerText;
+   console.log(c);
+   console.log(s);
+   i = row.rowIndex;
+   console.log(i);
+   document.getElementById("q2").style.display="block";
+                   
+  }
+})
+   
+
+  
+var flag="";
+  
+  if(annyang) {
+      var commands = {
+       'تسجيل الخروج':function(){     
+         document.getElementsByTagName("a")[0].click();
+         
+       },
+       'الصفحه الرئيسيه':function(){     
+        document.getElementsByTagName("a")[1].click();
+         
+       },
+      
+          
+        'رقم الماده *tag':function(variable){
+        let id=document.getElementById('cell2');
+        variable=variable.replaceAll(" ", "");
+        id.value=variable;
+        checkAndChange();
+       
+        },
+        'احذف *tag':function(variable){
+   
+          delet(variable);
+       
+        },
+  
+        'رقم الشعبه *tag':function(variable){
+          let id=document.getElementById('cell3');
+        variable=variable.replaceAll(" ", "");
+        variable2=convert(variable);   
+              if (flag=="true"){
+                  variable= variable2;
+                 }
+               else{
+              variable= variable;
+              }
+            
+          id.value=variable;
+          checkAndChange();
+        },
+        'عدد الساعات *tag':function(variable){
+          let id=document.getElementById('cell4');
+          variable=variable.replaceAll(" ", "");
+          variable2=convert(variable);   
+              if (flag=="true"){
+                  variable= variable2;
+                 }
+               else{
+              variable= variable;
+              }
+            
+          id.value=variable;
+          checkAndChange();
+          },
+          
+        'اضافه':function(){     
+          document.getElementsByClassName("addsectionn")[0].click();   
+          
+
+        },
+        
+        'تاكيد الجدول':function(){     
+          document.getElementsByClassName("addsectionn")[1].click();     
+        },
+
+        'رجوع':function(){     
+          document.getElementsByClassName("gh")[0].click();    
+        },
+        'للاسفل':function(){
+        window.scrollBy(0, 600);
+       },
+       'للاعلى':function(){
+        window.scrollBy(0, -600);
+       },
+       'اغلاق':function(){  
+           clos();
+        
+           }, 'نعم':function(){  
+           document.getElementById("ll1").click();
+           },
+           'لا':function(){  
+           no();
+           },
+      }
+     };
+     annyang.setLanguage('ar-PA');
+     // Add our commands to annyang
+     annyang.addCommands(commands);
+   
+    annyang.debug();
+    annyang.start({ autoRestart: true, continuous: true });
+
+     
+   function clos(){
+    document.getElementById("q").style.display="none";
+   }
+  
+
+    function delet(variable){
+      var input, filter, table, tr, td, i, txtValue;
+      
+      
+      table = document.getElementById("myTableq");
+      tr = table.getElementsByTagName("tr"); 
+      for (i = 1; i < tr.length; i++) {
+    
+      td = tr[i].getElementsByTagName("td")[2];
+      td2 = tr[i].getElementsByTagName("td")[1];
+      td3 = tr[i].getElementsByTagName("td")[3];
+       console.log(td);
+       console.log(variable);
+      if (td) {
+          txtValue = td.textContent || td.innerText;
+          console.log(txtValue);
+          if (txtValue==variable) {
+            c=td2.textContent || td2.innerText;
+            s=td3.textContent || td3.innerText;
+            console.log("hh");
+            console.log(c);
+            console.log(s);
+
+            document.getElementById("myTableq").deleteRow(i);
+            $.ajax({
+            url:"{{url_for('d_ajax')}}",
+           type:'POST',
+          data: {'std_id': std_id, 'cl':c , 'sl':s},
+                      
+    success:function(response){
+      console.log(response);
+       },
+      error: function (error) {
+    console.log(error);
+         },
+       });
+    
+    
+          }
+      }
+    }
+  }
+    function convert(variable){
+       
+       if (variable=="اثنين"){
+            flag="true"
+            console.log("f")
+            return 2
+        }
+
+        if (variable=="تسعه"){
+            flag="true"
+            return 9
+        }
+        if (variable=="ثمانيه"){
+            flag="true"
+            return 8
+        }
+        if (variable=="سبعه"){
+            flag="true"
+            return 7
+        }
+        if (variable=="سته"){
+            flag="true"
+            return 6
+        }
+        if (variable=="خمسه"){
+            flag="true"
+            return 5
+        }
+        if (variable=="اربعه"){
+            flag="true"
+            return 4
+        }
+        if (variable=="ثلاثه"){
+            flag="true"
+            return 3
+        }
+        if (variable=="تلاته"){
+            flag="true"
+            return 3
+        }
+        if (variable=="تلات"){
+            flag="true"
+            return 3
+        }
+        if (variable=="ثلاث"){
+            flag="true"
+            return 3
+        }
+       
+        if (variable=="اتنين"){
+            flag="true"
+            return 2
+        }
+        if (variable=="واحد"){
+            flag="true"
+            return 1
+        }
+        if (variable=="صفر"){
+            flag="true"
+            return 0
+        }
+     flag="false"
+    }
+
+
+
+    document.getElementById("ll1").addEventListener("click", function(evt) {
+      document.getElementById("q").style.display="none";
+      document.getElementById("myTableq").deleteRow(i);
+   $.ajax({
+    url:"{{url_for('d_ajax')}}",
+    type:'POST',
+    data: {'std_id': std_id,'cl':c ,'sl':s},
+                      
+    success:function(response){
+      console.log(response);
+       },
+      error: function (error) {
+    console.log(error);
+         },
+       });
+
+
+    })
+    function no(){
+    document.getElementById("q2").style.display="none";
+    
+   }
+
+    function checkAndChange(){
+   var ccc=document.getElementsByClassName('addsec')[0].value;
+      var sss=document.getElementsByClassName('addsec')[1].value;
+      var hhh=document.getElementsByClassName('addsec')[2].value;
+      var y=document.getElementsByClassName('addsectionn')[0];
+
+       
+   if(sss=="" || ccc=="" || hhh==""){
+       $('#w').prop('disabled', true);
+      
+       // $(".yess").css("color","rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3)");   
+       $("#w").css("color"," color: #000");   
+   }
+   else{
+       
+       $('#w').prop('disabled', false);
+       
+       $("#w").css("background-color","#517362");
+       
+       $("#w").css("color"," color: #000");
+
+   } 
+  }
+
+
+
+
+
+
+   </script>
+    </body>
+     </html>

@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>الجدول الدراسي الحالي </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script><meta name="viewport" content="width = device-width, initial-scale=1.0">
+  <script>
+    $( document ).ready(function() {
+      department=document.getElementById("myInput9").value;
+      type=document.getElementById("myInput8").value;
+      num=document.getElementById("myInput").value;
+      name=document.getElementById("myInput1").value;
+
+var checkAndChange =function(){
+ 
+if(department=="" &&type==""&& num=="" && name==""){
+   $.ajax({
+      url: "{{ url_for('cs_ajax') }}",
+      type: 'POST',
+  success: function(response) {
+    var trHTML = '';
+    $('#gg').html(trHTML);
+    $.each(response, function (i) {
+    
+    trHTML +=
+    '<tr><td>'
+    + (response[i]).b
+    + '</td><td>'
+    + (response[i]).room
+    + '</td><td>'
+    + (response[i]).t2
+    + '</td><td>'
+    + (response[i]).inst
+    + '</td ><td>'
+    + (response[i]).t
+    + '</td ><td>'
+    + (response[i]).s_id
+    + '</td ><td>'
+    + (response[i]).h
+    + '</td ><td>'
+    + (response[i]).name
+    + '</td ><td>'
+    + (response[i]).c_id
+    + '</td></tr>';
+  });
+  $('#gg').append(trHTML);
+  },
+  error: function(error) {
+  console.log(error);
+  }
+  });
+}}
+$("input").keyup(function(){
+  department2=document.getElementById("myInput9").value;
+  type2=document.getElementById("myInput8").value;
+  num2=document.getElementById("myInput").value;
+  name2=document.getElementById("myInput1").value;
+  
+  num=num2;
+  name=name2;
+  department=department2;
+  type=type2; 
+ checkAndChange();
+});
+
+});
+   </script>
+   </head>
+    <body>
+     
+        <div class="bannerr">
+
+        <div class="nav-links3" id="navLinks">
+        <ul class="nav-link">
+          <li>
+            <form  action="{{ url_for('afterlogin') }}" method="POST">
+              <input style="display: none" type="text" name="number" value="{{v2}}" id="number" >
+              <button type="submit" class="gh">رجوع</button><i class="jk fa fa-backward"></i>
+              </form></li>
+          <li><a href="{{ url_for('login') }}"class="b" >تسجيل الخروج</a><i class="jk fa fa-sign-out" ></i></li>
+           <li><a href="{{ url_for('home') }}" class="b">الصفحة الرئيسية</a><i class="jk fa fa-home" ></i></li>
+          
+       </ul>
+         </div>
+         
+          <div style="display:none" id="divv">
+            <input type="text" id="t1">
+          </div>
+          <br>
+           
+          <br>
+        <br>
+        <div  class="div1">
+         <input type="text" class="myinput" id="myInput9" placeholder=" التخصص">
+         <br><br>
+         <input type="text" class="myinput" id="myInput8"  placeholder=" نوع المساق">
+         <br><br>
+         
+        </div>
+        <button id="sd"class="Button" >ابحث</button>
+          <div class="div2">
+          <input type="text" class="myinput" id="myInput" onkeyup="myFunction()" placeholder=" رقم المساق">
+          <br><br>
+          <input type="text" class="myinput" id="myInput1" onkeyup="myFunction1()" placeholder=" اسم المساق ">
+          </div>
+          
+          <br><br><br><br><br>
+  
+         <table id="viewTable"  class="table111">
+         <tr class="header">
+         
+          <th style="width:15%;">المبنى </th>
+          <th style="width:5%;">القاعة </th>
+          <th style="width:10%;">الحالة </th>
+          <th style="width:15%;">اسم المدرس  </th>
+          <th style="width:15%;">الوقت </th>
+          <th style="width:5%;"> الشعبة</th>
+          <th style="width:5%;">عدد الساعات </th>
+          <th style="width:15%;">اسم المساق </th>
+         <th style="width:15%;">رمز المقرر</th>
+         
+        
+         </tr>
+         <tbody id="gg">
+        </tbody>
+ 
+    
+       
+          </table>
+  
+  
+
+  </body>
+  
+ 
+  <script>
+    
+   var course_id;
+   
+   $(".Button").click(function(){ 
+    department=document.getElementById("myInput9").value;
+    type=document.getElementById("myInput8").value;
+    if(department!="" && type!=""){
+    $.ajax({
+      url: "{{ url_for('show_ajax') }}",
+      data:{'department':department , 'type' :type },
+      type: 'POST',
+  success: function(response) {
+    
+    var trHTML = '';
+    $('#gg').html(trHTML);
+    $.each(response, function (i) {
+    
+    trHTML +=
+    '<tr><td>'
+    + (response[i]).b
+    + '</td><td>'
+    + (response[i]).room
+    + '</td><td>'
+    + (response[i]).t2
+    + '</td><td>'
+    + (response[i]).inst
+    + '</td ><td>'
+    + (response[i]).t
+    + '</td ><td>'
+    + (response[i]).s_id
+    + '</td ><td>'
+    + (response[i]).h
+    + '</td ><td>'
+    + (response[i]).name
+    + '</td ><td>'
+    + (response[i]).c_id
+    + '</td></tr>';
+  });
+  $('#gg').append(trHTML);
+  },
+  error: function(error) {
+  console.log(error);
+  }
+
+  });
+}
+});
+
+ 
+     
+    $( document ).ready(function() {
+      $.ajax({
+      url: "{{ url_for('cs_ajax') }}",
+      type: 'POST',
+  success: function(response) {
+    var trHTML = '';
+    $('#gg').html(trHTML);
+    $.each(response, function (i) {
+    
+    trHTML +=
+    '<tr><td>'
+    + (response[i]).b
+    + '</td><td>'
+    + (response[i]).room
+    + '</td><td>'
+    + (response[i]).t2
+    + '</td><td>'
+    + (response[i]).inst
+    + '</td ><td>'
+    + (response[i]).t
+    + '</td ><td>'
+    + (response[i]).s_id
+    + '</td ><td>'
+    + (response[i]).h
+    + '</td ><td>'
+    + (response[i]).name
+    + '</td ><td>'
+    + (response[i]).c_id
+    + '</td></tr>';
+  });
+  $('#gg').append(trHTML);
+  },
+  error: function(error) {
+  console.log(error);
+  }
+
+  });
+});
+   
+
+    function ff(variable) {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      
+      
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[4];
+        if (td) {
+          
+          txtValue = td.textContent || td.innerText;
+          
+          console.log(i)
+          
+          if (txtValue==variable) {
+            
+            document.getElementsByClassName("h")[i-1].click();
+          } else {
+            
+          }
+        }
+    
+       }
+    }
+    function ff2(variable) {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      
+      
+      table = document.getElementById("registration_table");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[4];
+      
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          console.log(i)
+          if (txtValue==variable) {
+            console.log("ggggggg")
+            console.log(i)
+            console.log(variable);
+            document.getElementsByClassName("w")[i-2].click();
+          }else{
+
+          }
+        }
+      }}
+    // للبحث باستخدام رقم المساق 
+    function myFunction() {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("viewTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[8];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+    
+       }
+    }
+    //   للبحث عن اسم المساق 
+    function myFunction1() {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput1");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("viewTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[7];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+      }
+  
+  
+      //   للبحث عن نوع المساق 
+    function myFunction8() {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput8");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("viewTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[3];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+     
+    }
+ 
+  
+ 
+  
+  var flag="";
+  
+  if(annyang) {
+      var commands = {
+       'تسجيل الخروج':function(){     
+         document.getElementsByTagName("a")[1].click();
+         
+       },
+       'الصفحه الرئيسيه':function(){     
+        document.getElementsByTagName("a")[2].click();
+         
+       },
+       'ابحث':function(){     
+        document.getElementsByClassName("Button")[0].click();
+         
+       },
+          
+        'رقم المساق *tag':function(variable){
+        let id=document.getElementById('myInput');
+        variable=variable.replaceAll(" ", "");
+        id.value=variable;
+        myFunction();
+        },
+  
+        'اسم المساق *tag':function(variable){
+        let id=document.getElementById('myInput1');
+        id.value=variable;
+        myFunction1();
+       
+        },
+        'التخصص *tag':function(variable){
+          let id=document.getElementById('myInput9');
+          id.value=variable;
+          $('input').keyup();
+          },
+
+        'نوع المساق *tag':function(variable){
+        let id=document.getElementById('myInput8');
+        id.value=variable;
+        $('input').keyup();
+        },
+        'احذف الرقم':function(variable){
+        let id=document.getElementById('myInput');
+        id.value="";
+        myFunction();
+        
+        },
+        'احذف الاسم':function(variable){
+        let id=document.getElementById('myInput1');
+        id.value="";
+        myFunction1();
+        
+        },
+        'احذف النوع':function(variable){
+        let id=document.getElementById('myInput8');
+        id.value="";
+         vv();
+        },
+        'احذف التخصص':function(variable){
+        let id=document.getElementById('myInput9');
+        id.value="";
+        vv();
+        },
+        'رجوع':function(){     
+          document.getElementsByClassName("gh")[0].click();    
+        },
+        'للاسفل':function(){
+        window.scrollBy(0, 600);
+       },
+       'للاعلى':function(){
+        window.scrollBy(0, -600);
+       },
+      }
+     };
+     annyang.setLanguage('ar-PA');
+     // Add our commands to annyang
+     annyang.addCommands(commands);
+   
+    annyang.debug();
+    annyang.start({ autoRestart: true, continuous: true });
+  
+
+   function vv(){
+    department=document.getElementById("myInput9").value;
+      type=document.getElementById("myInput8").value;
+      num=document.getElementById("myInput").value;
+      name=document.getElementById("myInput1").value;
+      
+ if(department=="" &&type==""&& num=="" && name==""){
+    $.ajax({
+       url: "{{ url_for('cs_ajax') }}",
+       type: 'POST',
+   success: function(response) {
+     var trHTML = '';
+     $('#gg').html(trHTML);
+     $.each(response, function (i) {
+     
+     trHTML +=
+     '<tr><td>'
+     + (response[i]).b
+     + '</td><td>'
+     + (response[i]).room
+     + '</td><td>'
+     + (response[i]).t2
+     + '</td><td>'
+     + (response[i]).inst
+     + '</td ><td>'
+     + (response[i]).t
+     + '</td ><td>'
+     + (response[i]).s_id
+     + '</td ><td>'
+     + (response[i]).h
+     + '</td ><td>'
+     + (response[i]).name
+     + '</td ><td>'
+     + (response[i]).c_id
+     + '</td></tr>';
+   });
+   $('#gg').append(trHTML);
+   },
+   error: function(error) {
+   console.log(error);
+   }
+   });
+ }
+}
+   
+
+
+    function convert(variable){
+        if (variable=="تسعه"){
+            flag="true"
+            return 9
+        }
+        if (variable=="ثمانيه"){
+            flag="true"
+            return 8
+        }
+        if (variable=="سبعه"){
+            flag="true"
+            return 7
+        }
+        if (variable=="سته"){
+            flag="true"
+            return 6
+        }
+        if (variable=="خمسه"){
+            flag="true"
+            return 5
+        }
+        if (variable=="اربعه"){
+            flag="true"
+            return 4
+        }
+        if (variable=="ثلاثه"){
+            flag="true"
+            return 3
+        }
+        if (variable=="تلاته"){
+            flag="true"
+            return 3
+        }
+        if (variable=="اثنين"){
+            flag="true"
+            return 2
+        }
+        if (variable=="اتنين"){
+            flag="true"
+            return 2
+        }
+        if (variable=="واحد"){
+            flag="true"
+            return 1
+        }
+        if (variable=="صفر"){
+            flag="true"
+            return 0
+        }
+     flag="false"
+    }
+      </script>
+      
+      </html>
